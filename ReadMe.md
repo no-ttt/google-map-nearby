@@ -116,6 +116,24 @@ devServer: {
 - `npm web`
   如需展示在github請執行這個指令後再發布
 
+## Github Demo頁面設定
+
+> Settings -> Page -> Branch
+
+選擇分支 (main) 把資料夾設定成`docs`後按下儲存 (Save)
+
+### Demo頁面網址
+
+```cmd
+https://{account}.github.io/{Repositories}/
+```
+
+範例：
+
+```cmd
+https://whlshy.github.io/component-template/
+```
+
 ## NPM
 
 ### 發布至NPM
