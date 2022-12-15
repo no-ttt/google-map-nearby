@@ -125,7 +125,7 @@ devServer: {
 ### Demo頁面網址
 
 ```cmd
-https://{account}.github.io/{Repositories}/
+https://{account}.github.io/{Repository}/
 ```
 
 [範例](https://whlshy.github.io/component-template/)：
