@@ -128,7 +128,7 @@ devServer: {
 https://{account}.github.io/{Repositories}/
 ```
 
-範例：
+[範例](https://whlshy.github.io/component-template/)：
 
 ```cmd
 https://whlshy.github.io/component-template/
