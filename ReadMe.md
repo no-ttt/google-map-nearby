@@ -2,6 +2,23 @@
 
 此模組是生成套件的框架，請依照以下方式。
 
+* [Step 1 - 安裝模組](#step-1---安裝模組)
+* [Step 2 - 修改`package.json`](#step-2---修改packagejson)
+* [Step 3 - 修改Demo HTML的Title](#step-3---修改demo-html的title)
+* [Step 4 - 修改、新增Compoent](#step-4---修改新增compoent)
+  * [`./src/index.js`](#srcindexjs)
+  * [`./src/components/Demo.js`](#srccomponentsdemojs)
+* [Styles](#styles)
+* [更改host與port](#更改host與port)
+* [Script](#script)
+* [Github Demo頁面設定](#github-demo頁面設定)
+  * [Demo頁面網址](#demo頁面網址)
+* [NPM](#npm)
+  * [發布至NPM](#發布至npm)
+    * [登入npm帳號](#登入npm帳號)
+    * [發布](#發布)
+  * [安裝](#安裝)
+
 ## Step 1 - 安裝模組
 
 ```cmd
