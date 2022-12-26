@@ -1,7 +1,7 @@
 {
-  "name": "component-template",
+  "name": "google-map-nearby",
   "version": "0.0.1",
-  "description": "Template for component",
+  "description": "Mark nearby landmarks",
   "main": "dist/bundle.js",
   "scripts": {
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
@@ -10,11 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/whlshy/component-template.git"
+    "url": "https://github.com/no-ttt/google-map-nearby.git"
   },
-  "author": "WHL",
+  "author": "no-ttt",
   "license": "MIT",
   "dependencies": {
+    "@react-google-maps/api": "^2.17.1",
     "prop-types": "^15.8.1",
     "react-css-modules": "^4.7.11"
   },
@@ -43,9 +44,9 @@
   },
   "keywords": [
     "react",
-    "chrome",
-    "tabs",
-    "chrome-tabs",
-    "node"
+    "map",
+    "google-map",
+    "@react-google-maps",
+    "nearby"
   ]
 }

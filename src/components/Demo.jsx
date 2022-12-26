@@ -1,59 +1,73 @@
-import React, { useState, useEffect } from 'react'
-import Tabs from './Tabs'
+import React, { useState } from 'react'
+import Map from './Map'
 import '../styles/Demo.css'
 
-export default function Demo(props) {
-  const [tabs, setTabs] = useState([
-    { key: 0, favicon: "https://www.google.com/favicon.ico", title: "Google" },
-    { key: 1, favicon: "https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico", title: "Facebook" },
-    { key: 2, favicon: "https://it108.wke.csie.ncnu.edu.tw/edu.ico", title: "IT Technology" }
-  ])
-  const [dark, setDark] = useState(false)
-  const [key, setID] = useState(2)
-  const [current, setCurrent] = useState(0)
+const nearby = 
+  [
+    {
+      "oid": 707,
+      "cName": "鹿麻產車站",
+      "pictureUrl": null,
+      "positionLon": 120.5313720703,
+      "positionLat": 23.5041694641
+    },
+    {
+      "oid": 708,
+      "cName": "鹿滿菸樓",
+      "pictureUrl": null,
+      "positionLon": 120.5315704346,
+      "positionLat": 23.5040397644
+    },
+    {
+      "oid": 714,
+      "cName": "竹崎鹿滿客家文化園區",
+      "pictureUrl": null,
+      "positionLon": 120.5358428955,
+      "positionLat": 23.5018291473
+    },
+    {
+      "oid": 6265,
+      "cName": "英和碗粿店",
+      "pictureUrl": null,
+      "positionLon": 120.5330963135,
+      "positionLat": 23.4981594086
+    },
+    {
+      "oid": 12048,
+      "cName": "山合院休閒民宿",
+      "pictureUrl": "https://taiwan.taiwanstay.net.tw/twpic/1063.jpg",
+      "positionLon": 120.5333557129,
+      "positionLat": 23.498714447
+    }
+  ];
 
-  const addTab = (isCurrent) => {
-    let tab = [{ key: key + 1, title: "New Tab" }]
-    let tmpTabs = tabs.concat(tab);
-    !!isCurrent && setCurrent(key + 1)
-    setID(key + 1)
-    setTabs(tmpTabs)
+export default function Demo() {
+  const [selectData, setSelectData] = useState({})
+  const [apiKey, setKey] = useState("")
+  let Item = () => {
+    return (
+      <div>{selectData.cName}</div>
+    )
   }
-
-  const onClose = (key) => {
-    let tmpTabs = tabs.filter(f => f.key !== key);
-    let idx = null; 
-    tabs.forEach((f, index) => f.key === current && (idx = index))
-    let isCurrent = tmpTabs.filter(f => f.key === current).length > 0 ? true : false;
-    let tmpCurrent = tmpTabs.length > 0 ? (tmpTabs[idx] ? tmpTabs[idx].key : tmpTabs[tmpTabs.length - 1].key) : null;
-    !isCurrent && setCurrent(tmpCurrent)
-    setTabs(tmpTabs)
-  }
-
-
+  
   return (
-    <div className={`root ${!dark ? "" : " dark-theme"}`}>
-      <div className='surface'>
-        <div className="mock-browser">
-          <Tabs
-            currentTabs={tabs}
-            dark={dark}
-            defaultCurrent={current}
-            onClick={key => setCurrent(key)}
-            onClose={key => onClose(key)}
-            onChange={tabs => setTabs(tabs)}
-          />
-          <div className="chrome-tabs-optional-shadow-below-bottom-bar"></div>
-          <div className="mock-browser-content">
-            <div className="buttons">
-              <button onClick={e => setDark(!dark)} data-theme-toggle>Toggle dark theme</button>
-              <button onClick={e => addTab(true)} data-add-tab>Add new tab</button>
-              <button onClick={e => addTab()} data-add-background-tab>Add tab in the background</button>
-              <button onClick={e => onClose(current)} data-remove-tab>Remove active tab</button>
-            </div>
-          </div>
+    <div>
+      {
+        apiKey === "" &&
+        <div style={{ padding: "20px" }}>
+          <input id="key" placeholder="請先輸入 api-key" />
+          <button onClick={() => setKey(document.getElementById('key').value)}>OK</button>
         </div>
-      </div>
+      }
+      {
+        apiKey !== "" &&
+        <Map apiKey={apiKey} center={{lat: 23.504, lng: 120.531 }} defaultZoom={16} mainLat={23.504} mainLng={120.531} 
+        nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
+        nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
+      >
+        <Item />
+      </Map>
+      }
     </div>
   )
 }

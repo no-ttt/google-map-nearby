@@ -1,2 +1,2 @@
-import ChromeTabs from './components/Tabs'
-export default ChromeTabs
+import Map from './components/Map'
+export default Map
