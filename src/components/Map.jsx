@@ -23,7 +23,7 @@ export class Map extends Component {
 		width: PropTypes.string,
 		/** 地圖的高度 */
 		height: PropTypes.string,
-		/** 地圖中心點 (需要明確給予 lat 和 lng 的值, ex.{lat: [lat], lng: [lng]}) */
+		/** 地圖中心點 (需要明確給予 lat 和 lng 的值, ex. {lat: [lat], lng: [lng]}) */
 		center: PropTypes.object.isRequired,
 		/** 主要的 Marker 緯度 */
 		mainLat: PropTypes.number,
@@ -42,7 +42,7 @@ export class Map extends Component {
 		/** 取得附近地標的經度 */
 		lng: PropTypes.func,
 		/** 設置目前所點擊的地標資料 */
-		setCurrent: PropTypes.object,
+		setCurrent: PropTypes.func,
 	}
 
 	static defaultProps = {
