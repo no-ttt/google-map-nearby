@@ -91,7 +91,20 @@ npm i google-map-nearby --save
 
   export default function Demo() {
     const [selectData, setSelectData] = useState({})
-
+    const mapOptions = {
+      styles: [
+        {
+          featureType: "poi",
+          stylers: [
+            {
+              visibility: "off",
+            },
+          ],
+        },
+      ],
+      mapTypeControl: false,
+    }
+    
     let Item = () => {
       return (
         <div>{selectData.cName}</div>
