@@ -23,6 +23,8 @@ npm i google-map-nearby --save
 ```
 
 ## PROPS & METHODS
+> 至少需要給予 `apiKey` 以及 `center` 才能執行。
+
 |Prop Name | Type | Default | Description |
 | -------- | -------- | -------- | -------- |
 | apiKey     | string     |     | api key     |
@@ -38,12 +40,14 @@ npm i google-map-nearby --save
 | lat     | func     |      |  取得附近地標的緯度    |
 | lng     | func     |      |   取得附近地標的經度   |
 | setCurrent     | func     |      |   設置目前所點擊的地標資料   |
+| popup     | node     |      |   彈跳窗內容   |
+| options     | object     |      |   地圖樣式設定   |
 
-> 至少需要給予 `apiKey` 以及 `center` 才能執行。
 
 ## Usage
 ```jsx
   import React, { useState } from 'react'
+  import Map from 'google-map-nearby'
 
   const GOOGLE_MAPS_API_KEY = 'API_KEY'
   const nearby = 
@@ -98,9 +102,16 @@ npm i google-map-nearby --save
       <Map apiKey={GOOGLE_MAPS_API_KEY} center={{lat: 23.504, lng: 120.531 }} defaultZoom={16} mainLat={23.504} mainLng={120.531} 
         nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
         nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
-      >
-        <Item />
-      </Map>
+        popup={<Item />} options={mapOptions}
+      />
     )
   }
 ```
+
+## 版本更新
+### 修改內容
+- 彈跳窗內容原本用 `children` 進行傳遞，更改成 `popup` 參數傳遞
+- `popup` 加上 Close Button
+
+### 增加功能
+- 可以自行傳入 MapOptions 對地圖進行調整

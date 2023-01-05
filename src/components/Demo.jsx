@@ -38,12 +38,41 @@ const nearby =
       "pictureUrl": "https://taiwan.taiwanstay.net.tw/twpic/1063.jpg",
       "positionLon": 120.5333557129,
       "positionLat": 23.498714447
+    },
+    {
+      "oid": 11934,
+      "cName": "香林薇拉民宿",
+      "type": 7,
+      "pictureUrl": "https://taiwan.taiwanstay.net.tw/twpic/70671.jpg",
+      "positionLon": 120.5513687134,
+      "positionLat": 23.5249538422
+    },
+    {
+      "oid": 12065,
+      "cName": "波希瓦舍民宿",
+      "type": 7,
+      "pictureUrl": "https://taiwan.taiwanstay.net.tw/twpic/26561.jpg",
+      "positionLon": 120.551399231,
+      "positionLat": 23.5251846313
     }
   ];
 
 export default function Demo() {
   const [selectData, setSelectData] = useState({})
   const [apiKey, setKey] = useState("")
+  const mapOptions = {
+    styles: [
+			{
+				featureType: "poi",
+				stylers: [
+					{
+						visibility: "off",
+					},
+				],
+			},
+		],
+    mapTypeControl: false,
+  }
   let Item = () => {
     return (
       <div>{selectData.cName}</div>
@@ -62,11 +91,10 @@ export default function Demo() {
       {
         apiKey !== "" &&
         <Map apiKey={apiKey} center={{lat: 23.504, lng: 120.531 }} defaultZoom={16} mainLat={23.504} mainLng={120.531} 
-        nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
-        nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
-      >
-        <Item />
-      </Map>
+          nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
+          nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
+          popup={<Item />} options={mapOptions}
+        />
       }
     </div>
   )

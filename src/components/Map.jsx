@@ -2,18 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CSSModules from 'react-css-modules'
 import styles from '../styles/Map.styl'
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api'
-
-const MapStyles = [
-	{
-		featureType: "poi",
-		stylers: [
-			{
-				visibility: "off",
-			},
-		],
-	},
-];
+import { GoogleMap, LoadScript, Marker, InfoWindow, MarkerClusterer } from '@react-google-maps/api'
 
 export class Map extends Component {
 	static propTypes = {
@@ -36,13 +25,17 @@ export class Map extends Component {
 		/** 附近地標 icon 的大小 */
 		iconSize: PropTypes.object,
 		/** 附近地標的相關資料 */
-		nearbyData: PropTypes.object,
+		nearbyData: PropTypes.array,
 		/** 取得附近地標的緯度 */
 		lat: PropTypes.func,
 		/** 取得附近地標的經度 */
 		lng: PropTypes.func,
 		/** 設置目前所點擊的地標資料 */
 		setCurrent: PropTypes.func,
+		/** 彈跳窗內容 */
+		popup: PropTypes.node,
+		/** 地圖樣式設定 */
+		options: PropTypes.object,
 	}
 
 	static defaultProps = {
@@ -57,19 +50,23 @@ export class Map extends Component {
 		this.state = {
 			currentClick: {},
 			click: false,
-			centerLat: this.props.center.lat,
-			centerLng: this.props.center.lng,
+			center: this.props.center,
 		}
 	}
 
-	render() {
-		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, children } = this.props
-		const { click, currentClick, centerLat, centerLng } = this.state
+	handleOnLoad = (map) => {
+		this.setState({ map: map })
+	}
 
-		const icon = { 
-			url: nearbyIcons, 
+	render() {
+		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, popup, options } = this.props
+		const { click, currentClick, center } = this.state
+
+		const icon = {
+			url: nearbyIcons,
 			scaledSize: iconSize
 		}
+
 		const containerStyle = {
 			width: width,
 			height: height
@@ -82,39 +79,40 @@ export class Map extends Component {
 				>
 					<GoogleMap
 						mapContainerStyle={containerStyle}
-						center={{ lat: centerLat, lng: centerLng }}
+						center={center}
 						zoom={defaultZoom}
-						options={{
-							styles: MapStyles,
-							mapTypeControl: false,
-							fullscreenControl: false,
-						}}
-						onClick={() => this.setState({ click: false})}
+						options={options}
+						onLoad={this.handleOnLoad}
 					>
-						<Marker
-							position={{ lat: mainLat, lng: mainLng }}
-						/>
+
+						{
+							mainLat && mainLng &&
+							<Marker
+								position={{ lat: mainLat, lng: mainLng }}
+							/>
+						}
+
 						{
 							nearbyData !== undefined &&
 							nearbyData.map((nearby, i) => (
 								<Marker
 									key={i}
 									position={{ lat: lat(nearby), lng: lng(nearby) }}
-									onClick={() => { this.setState({ currentClick: nearby, click: true, centerLat: lat(nearby), centerLng: lng(nearby) }); setCurrent(nearby) }}
+									onClick={() => { this.setState({ currentClick: nearby, click: true, center: { lat: lat(nearby), lng: lng(nearby) } }); setCurrent(nearby) }}
 									icon={icon}
 								/>
 							))
 						}
 
 						{
-							click &&
+							click && popup &&
 							<InfoWindow
 								position={{ lat: lat(currentClick), lng: lng(currentClick) }}
 								onCloseClick={() => this.setState({ click: false })}
 								options={{ pixelOffset: { height: -40 } }}
 								zIndex={1}
 							>
-								{children}
+								{popup}
 							</InfoWindow>
 						}
 
