@@ -134,17 +134,11 @@ npm i google-map-nearby --save
 ```
 
 ## 版本更新
-> version: 0.1.4
-
-### 修改內容
+### 0.1.4
 - 彈跳窗內容原本用 `children` 進行傳遞，更改成 `popup` 參數傳遞
 - `popup` 加上 Close Button
-
-### 增加功能
 - 可以自行傳入 MapOptions 對地圖進行調整
 
-> version: 0.2.5
-
-### 增加功能
+### 0.2.6
 - Marker 可以顯示 Label，以及外部調整 label style
 - 可以自行設置到達多少 zoom value 時顯示 label
