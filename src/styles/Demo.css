@@ -40,3 +40,8 @@ button {
 button:hover {
   background: rgb(208, 208, 208);
 }
+
+.map-label {
+  font-weight: bold;
+  margin-bottom: 60px;
+}

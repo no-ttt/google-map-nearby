@@ -36,6 +36,12 @@ export class Map extends Component {
 		popup: PropTypes.node,
 		/** 地圖樣式設定 */
 		options: PropTypes.object,
+		/** Label text */
+		labelText: PropTypes.func,
+		/** Marker label style */
+		labelStyle: PropTypes.string,
+		/** 到達多少 zoom 值顯示 label */
+		labelZoom: PropTypes.number,
 	}
 
 	static defaultProps = {
@@ -43,6 +49,7 @@ export class Map extends Component {
 		width: "100%",
 		height: "100vh",
 		iconSize: { width: 40, height: 40 },
+		labelZoom: 18,
 	}
 
 	constructor(props) {
@@ -51,6 +58,8 @@ export class Map extends Component {
 			currentClick: {},
 			click: false,
 			center: this.props.center,
+			map: null,
+			currentZoom: this.props.defaultZoom,
 		}
 	}
 
@@ -58,9 +67,21 @@ export class Map extends Component {
 		this.setState({ map: map })
 	}
 
+	handleZoomChanged = () => {
+		const { map } = this.state
+
+		if (map) {
+			const zl = map.getZoom()
+			console.log(zl)
+			this.setState({
+				currentZoom: zl
+			})
+		}
+	}
+
 	render() {
-		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, popup, options } = this.props
-		const { click, currentClick, center } = this.state
+		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, popup, options, labelText, labelStyle, labelZoom } = this.props
+		const { click, currentClick, center, currentZoom } = this.state
 
 		const icon = {
 			url: nearbyIcons,
@@ -83,6 +104,7 @@ export class Map extends Component {
 						zoom={defaultZoom}
 						options={options}
 						onLoad={this.handleOnLoad}
+						onZoomChanged={this.handleZoomChanged}
 					>
 
 						{
@@ -100,6 +122,14 @@ export class Map extends Component {
 									position={{ lat: lat(nearby), lng: lng(nearby) }}
 									onClick={() => { this.setState({ currentClick: nearby, click: true, center: { lat: lat(nearby), lng: lng(nearby) } }); setCurrent(nearby) }}
 									icon={icon}
+									label={
+										labelText !== undefined && currentZoom >= labelZoom ? 
+										{
+											text: labelText(nearby), 
+											className: labelStyle
+										} 
+										: { text: " " }
+									}
 								/>
 							))
 						}

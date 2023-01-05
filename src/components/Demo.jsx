@@ -73,6 +73,7 @@ export default function Demo() {
 		],
     mapTypeControl: false,
   }
+
   let Item = () => {
     return (
       <div>{selectData.cName}</div>
@@ -93,7 +94,7 @@ export default function Demo() {
         <Map apiKey={apiKey} center={{lat: 23.504, lng: 120.531 }} defaultZoom={16} mainLat={23.504} mainLng={120.531} 
           nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
           nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
-          popup={<Item />} options={mapOptions}
+          popup={<Item />} options={mapOptions}  labelText={(d) => d.cName} labelStyle="map-label" labelZoom={18}
         />
       }
     </div>

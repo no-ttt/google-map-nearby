@@ -42,9 +42,20 @@ npm i google-map-nearby --save
 | setCurrent     | func     |      |   設置目前所點擊的地標資料   |
 | popup     | node     |      |   彈跳窗內容   |
 | options     | object     |      |   地圖樣式設定   |
-
+| labelText     | func     |      | Label text     |
+| labelStyle     | string     |      | Marker label style     |
+| labelZoom     | number     |  18    | 到達多少 zoom 值顯示 label     |
 
 ## Usage
+### CSS
+```css
+.map-label {
+  font-weight: bold;
+  margin-bottom: 60px;
+}
+```
+
+### React
 ```jsx
   import React, { useState } from 'react'
   import Map from 'google-map-nearby'
@@ -104,7 +115,7 @@ npm i google-map-nearby --save
       ],
       mapTypeControl: false,
     }
-    
+
     let Item = () => {
       return (
         <div>{selectData.cName}</div>
@@ -116,15 +127,24 @@ npm i google-map-nearby --save
         nearbyData={nearby} lat={(d) => d.positionLat} lng={(d) => d.positionLon} setCurrent={(data) => setSelectData(data)}
         nearbyIcons={"https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png"} iconSize={{ width: 40, height: 40 }}
         popup={<Item />} options={mapOptions}
+        labelText={(d) => d.cName} labelStyle="map-label" labelZoom={18}
       />
     )
   }
 ```
 
 ## 版本更新
+> version: 0.1.4
+
 ### 修改內容
 - 彈跳窗內容原本用 `children` 進行傳遞，更改成 `popup` 參數傳遞
 - `popup` 加上 Close Button
 
 ### 增加功能
 - 可以自行傳入 MapOptions 對地圖進行調整
+
+> version: 0.2.5
+
+### 增加功能
+- Marker 可以顯示 Label，以及外部調整 label style
+- 可以自行設置到達多少 zoom value 時顯示 label
