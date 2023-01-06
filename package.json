@@ -1,6 +1,6 @@
 {
   "name": "google-map-nearby",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Mark nearby landmarks",
   "main": "dist/bundle.js",
   "scripts": {

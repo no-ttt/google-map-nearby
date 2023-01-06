@@ -144,6 +144,6 @@ npm i google-map-nearby --save
 - Marker 可以顯示 Label，以及外部調整 label style
 - 可以自行設置到達多少 zoom value 時顯示 label
 
-### 0.2.7
+### 0.2.8
 - 加入 `isLoadScript` 參數判斷是否加載過 Script
 - 移動地圖彈跳窗會自動關閉
