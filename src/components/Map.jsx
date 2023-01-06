@@ -42,6 +42,8 @@ export class Map extends Component {
 		labelStyle: PropTypes.string,
 		/** 到達多少 zoom 值顯示 label */
 		labelZoom: PropTypes.number,
+		/** 是否要加載 Script */
+		isLoadScript: PropTypes.bool,
 	}
 
 	static defaultProps = {
@@ -50,6 +52,7 @@ export class Map extends Component {
 		height: "100vh",
 		iconSize: { width: 40, height: 40 },
 		labelZoom: 18,
+		isLoadScript: true,
 	}
 
 	constructor(props) {
@@ -74,13 +77,14 @@ export class Map extends Component {
 			const zl = map.getZoom()
 			console.log(zl)
 			this.setState({
-				currentZoom: zl
+				currentZoom: zl,
+				click: false,
 			})
 		}
 	}
 
 	render() {
-		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, popup, options, labelText, labelStyle, labelZoom } = this.props
+		const { apiKey, width, height, mainLat, mainLng, defaultZoom, nearbyData, nearbyIcons, iconSize, lat, lng, setCurrent, popup, options, labelText, labelStyle, labelZoom, isLoadScript } = this.props
 		const { click, currentClick, center, currentZoom } = this.state
 
 		const icon = {
@@ -93,11 +97,67 @@ export class Map extends Component {
 			height: height
 		}
 
+		console.log(window.google)
 		return (
 			<div>
-				<LoadScript
-					googleMapsApiKey={apiKey}
-				>
+				{
+					isLoadScript ?
+					<LoadScript
+						googleMapsApiKey={apiKey}
+					>
+						<GoogleMap
+							mapContainerStyle={containerStyle}
+							center={center}
+							zoom={defaultZoom}
+							options={options}
+							onLoad={this.handleOnLoad}
+							onZoomChanged={this.handleZoomChanged}
+							onDragStart={() => this.setState({ click: false })}
+							onClick={() => this.setState({ click: false })}
+						>
+
+							{
+								mainLat && mainLng &&
+								<Marker
+									position={{ lat: mainLat, lng: mainLng }}
+								/>
+							}
+
+							{
+								nearbyData !== undefined &&
+								nearbyData.map((nearby, i) => (
+									<Marker
+										key={i}
+										position={{ lat: lat(nearby), lng: lng(nearby) }}
+										onClick={() => { this.setState({ currentClick: nearby, click: true, center: { lat: lat(nearby), lng: lng(nearby) } }); setCurrent(nearby) }}
+										icon={icon}
+										label={
+											labelText !== undefined && currentZoom >= labelZoom ?
+												{
+													text: labelText(nearby),
+													className: labelStyle
+												}
+												: { text: " " }
+										}
+									/>
+								))
+							}
+
+							{
+								click && popup &&
+								<InfoWindow
+									position={{ lat: lat(currentClick), lng: lng(currentClick) }}
+									onCloseClick={() => this.setState({ click: false })}
+									options={{ pixelOffset: { height: -40 } }}
+									zIndex={1}
+								>
+									{popup}
+								</InfoWindow>
+							}
+
+						</GoogleMap>
+					</LoadScript>
+					:
 					<GoogleMap
 						mapContainerStyle={containerStyle}
 						center={center}
@@ -105,6 +165,8 @@ export class Map extends Component {
 						options={options}
 						onLoad={this.handleOnLoad}
 						onZoomChanged={this.handleZoomChanged}
+						onDragStart={() => this.setState({ click: false })}
+						onClick={() => this.setState({ click: false })}
 					>
 
 						{
@@ -123,12 +185,12 @@ export class Map extends Component {
 									onClick={() => { this.setState({ currentClick: nearby, click: true, center: { lat: lat(nearby), lng: lng(nearby) } }); setCurrent(nearby) }}
 									icon={icon}
 									label={
-										labelText !== undefined && currentZoom >= labelZoom ? 
-										{
-											text: labelText(nearby), 
-											className: labelStyle
-										} 
-										: { text: " " }
+										labelText !== undefined && currentZoom >= labelZoom ?
+											{
+												text: labelText(nearby),
+												className: labelStyle
+											}
+											: { text: " " }
 									}
 								/>
 							))
@@ -147,7 +209,7 @@ export class Map extends Component {
 						}
 
 					</GoogleMap>
-				</LoadScript>
+				}
 			</div>
 		)
 	}
